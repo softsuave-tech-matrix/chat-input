@@ -32,6 +32,40 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+<string>Need photo library access to upload images</string>
+<key>NSCameraUsageDescription</key>
+<string>Need camera access to take photos</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Need microphone access for video recording</string>
+<key>NSDocumentsFolderUsageDescription</key>
+<string>Need access to documents</string>
+<key>NSDesktopFolderUsageDescription</key>
+<string>Need access to desktop</string>
+<key>NSDownloadsFolderUsageDescription</key>
+<string>Need access to downloads</string>
+<key>LSSupportsOpeningDocumentsInPlace</key>
+<true/>
+<key>UISupportsDocumentBrowser</key>
+<true/>
+<key>NSDocumentsDirectoryUsageDescription</key>
+<string>We need access to files to save the documents</string>
+
+<key>CFBundleDocumentTypes</key>
+<array>
+    <dict>
+        <key>CFBundleTypeName</key>
+        <string>Document</string>
+        <key>LSItemContentTypes</key>
+        <array>
+            <string>com.adobe.pdf</string>
+            <string>org.openxmlformats.wordprocessingml.document</string>
+            <string>com.microsoft.word.doc</string>
+            <string>public.text</string>
+            <string>public.data</string>
+        </array>
+    </dict>
+</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>
