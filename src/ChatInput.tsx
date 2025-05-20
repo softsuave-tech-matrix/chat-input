@@ -14,7 +14,7 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
 
-type InputComponentProps = {
+type ChatInputComponentProps = {
   showUploadOption: boolean;
 };
 
@@ -128,7 +128,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({file, onRemove}) => {
 };
 
 
-const InputComponent : React.FC<InputComponentProps> = ({ showUploadOption }) => {
+const ChatInput : React.FC<ChatInputComponentProps> = ({ showUploadOption }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([{id: '1', text: 'Hi'}]);
   const [uploadModalVisible, setUploadModalVisible] = useState(false);
@@ -517,4 +517,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InputComponent;
+export default ChatInput;

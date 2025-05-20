@@ -1,7 +1,7 @@
 import React from 'react';
 import {DimensionValue, StatusBar, useColorScheme, View} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import InputComponent from './src/InputComponent';
+import ChatInput from './src/ChatInput';
 
 
 function App(): React.JSX.Element {
@@ -28,7 +28,7 @@ function App(): React.JSX.Element {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
             paddingHorizontal: safePadding,
           }}>
-          <InputComponent showUploadOption={true} />
+          <ChatInput showUploadOption={true} />
         </View>
     </View>
   );
