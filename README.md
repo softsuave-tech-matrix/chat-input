@@ -47,20 +47,20 @@ All the `ChatInput` props can be passed.
 
 ## DefaultStyle Props
 
-| **Key**                           | **Type**                         | **Description** 
-
-`containerStyle`	                | `ViewStyle`	                   | Style for the overall input container.
-| `inputStyle`	                    | `TextStyle`	                   | Style for the text input field.
-| `buttonStyle`	                    | `ViewStyle`	                   | Style for the send button container.
-| `buttonTextStyle`	                | `TextStyle`	                   | Style for the send button text.
-| `uploadButtonStyle`	            | `ViewStyle`	                   | Style for the upload button.
-| `uploadIconStyle`	                | `ImageStyle`	                   | Style for the upload icon image.
-| `previewContainerStyle`	        | `ViewStyle`	                   | Style for the preview items container.
-| `previewImageStyle`	            | `ViewStyle`	                   | Style for previewed images.
-| `previewFileStyle`	            | `ViewStyle`	                   | Style for previewed file blocks.
-| `modalStyle`	                    | `ViewStyle`	                   | Style for the modal container.
-| `modalOptionStyle`	            | `TextStyle`	                   | Style for modal options text.
-| `cancelOptionStyle`	            | `TextStyle`	                   | Style for cancel option text.
+| **Key**                          | **Type**                          | **Description** 
+| -------------------------------- | --------------------------------  | --------------------------------
+| `containerStyle`	               | `ViewStyle`	                   | Style for the overall input container.
+| `inputStyle`	                   | `TextStyle`	                   | Style for the text input field.
+| `buttonStyle`	                   | `ViewStyle`	                   | Style for the send button container.
+| `buttonTextStyle`	               | `TextStyle`	                   | Style for the send button text.
+| `uploadButtonStyle`	           | `ViewStyle`	                   | Style for the upload button.
+| `uploadIconStyle`	               | `ImageStyle`	                   | Style for the upload icon image.
+| `previewContainerStyle`	       | `ViewStyle`	                   | Style for the preview items container.
+| `previewImageStyle`	           | `ViewStyle`	                   | Style for previewed images.
+| `previewFileStyle`	           | `ViewStyle`	                   | Style for previewed file blocks.
+| `modalStyle`	                   | `ViewStyle`	                   | Style for the modal container.
+| `modalOptionStyle`	           | `TextStyle`	                   | Style for modal options text.
+| `cancelOptionStyle`	           | `TextStyle`	                   | Style for cancel option text.
 
 
 
