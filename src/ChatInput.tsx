@@ -3,20 +3,17 @@ import {
   View,
   TextInput,
   Button,
-  Text,
-  StyleSheet,
   TouchableOpacity,
-  Modal,
   Image,
   ScrollView,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
-
-type ChatInputComponentProps = {
-  showUploadOption: boolean;
-};
+import ImagePreview from './ImagePreview';
+import FilePreview from './FilePreview';
+import { ChatInputProps } from './types';
+import { defaultStyles } from './styles';
+import UploadModal from './UploadModal';
 
 interface Message {
   id: string;
@@ -28,111 +25,19 @@ interface Message {
   };
 }
 
-type FileT = {
-  url: string;
-  type: string;
-  name: string;
-};
-
-type ImagePreviewProps = {
-  file: FileT;
-  id: string;
-  onRemove: (uriToRemove: string) => void;
-};
-
-type FilePreviewProps = {
-  file: FileT;
-  id: string;
-  onRemove: (uriToRemove: string) => void;
-};
-
-
-const FilePreview = ({ file, onRemove }:FilePreviewProps) => {
-  return (
-    <View
-      style={styles.filePreview}
-    >
-      <View
-        style={styles.filePreviewContainer}
-      >
-        <Text
-          style={styles.fileTextStyle}
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
-          {file.name || 'Document'}
-        </Text>
-      </View>
-      <TouchableOpacity
-        onPress={() => onRemove(file.url)}
-        style={styles.previewCloseContainer}
-      >
-        <Image
-          source={require('./images/Close.png')}
-          style={styles.closeIconStyle}
-        />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const ImagePreview: React.FC<ImagePreviewProps> = ({file, onRemove}) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  return (
-    <>
-      <View
-        style={styles.previewImage}>
-        <TouchableOpacity
-          onPress={() => setModalVisible(true)}
-          style={styles.imagePreviewContainer}>
-          <Image
-            source={{uri: file.url}}
-            resizeMode="cover"
-            style={styles.imageStyle}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => onRemove(file.url)}
-          style={styles.previewCloseContainer}>
-          <Image
-            source={require('./images/Close.png')}
-            style={styles.closeIconStyle}
-          />
-        </TouchableOpacity>
-      </View>
-      <Modal visible={modalVisible} transparent={true}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity
-            style={styles.closeArea}
-            onPress={() => setModalVisible(false)}>
-            <Image
-              source={require('./images/Close.png')}
-              style={{
-                width: 26,
-                height: 26,
-                tintColor: 'white',
-                cursor: 'pointer',
-              }}
-            />
-          </TouchableOpacity>
-          <Image
-            source={{uri: file.url}}
-            resizeMode="contain"
-            style={styles.fullImage}
-          />
-        </View>
-      </Modal>
-    </>
-  );
-};
-
-
-const ChatInput : React.FC<ChatInputComponentProps> = ({ showUploadOption }) => {
+const ChatInput: React.FC<ChatInputProps> = ({
+  showUploadOption = true,
+  defaultStyleValues,
+  images: customImages = {},
+  sendText = 'Send',
+  placeHolderText = 'Type your message',
+  onSend,
+}) => {
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<Message[]>([{id: '1', text: 'Hi'}]);
   const [uploadModalVisible, setUploadModalVisible] = useState(false);
   const [selectedMediaData, setSelectedMediaData] = useState<any[]>([]);
+  const images = { ...customImages };
+
 
   const handleUploadPress = () => {
     setUploadModalVisible(true);
@@ -156,14 +61,14 @@ const ChatInput : React.FC<ChatInputComponentProps> = ({ showUploadOption }) => 
 
     if (message.trim()) {
       newMessages.push({
-        id: String(messages.length + 1),
+        id: String(Date.now()),
         text: message.trim(),
       });
     }
 
-    selectedMediaData.forEach((media, _i) => {
+    selectedMediaData.forEach(media => {
       newMessages.push({
-        id: String(messages.length + newMessages.length + 1),
+        id: String(Date.now() + Math.random()),
         file: {
           uri: media.uri,
           name: media.name || 'media',
@@ -172,7 +77,10 @@ const ChatInput : React.FC<ChatInputComponentProps> = ({ showUploadOption }) => 
       });
     });
 
-    setMessages(prev => [...newMessages.reverse(), ...prev]);
+    if (onSend) {
+      onSend(newMessages);
+    }
+
     setMessage('');
     setSelectedMediaData([]);
   };
@@ -249,17 +157,22 @@ const ChatInput : React.FC<ChatInputComponentProps> = ({ showUploadOption }) => 
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.inputRowWrapper}>
+    <View style={[defaultStyles.container, defaultStyleValues?.containerStyle]}>
+      <View style={[defaultStyles.inputRowWrapper]}>
         {selectedMediaData.length > 0 && (
-          <View style={styles.previewContainer}>
+          <View style={[defaultStyles.previewContainer, defaultStyleValues?.previewContainerStyle]}>
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={true}
-              contentContainerStyle={styles.previewContainer}>
+              contentContainerStyle={[
+                defaultStyles.previewContainer,
+                defaultStyleValues?.previewContainerStyle,
+              ]}>
               {selectedMediaData.map((media, index) => (
-                <View key={index} style={styles.previewItem}>
-                  {media.type.startsWith('image') ? (
+                <View
+                  key={index}
+                  style={[defaultStyles.previewItem, defaultStyleValues?.previewContainerStyle]}>
+                  {media.type?.startsWith('image') ? (
                     <ImagePreview
                       file={{
                         url: media.uri,
@@ -268,6 +181,8 @@ const ChatInput : React.FC<ChatInputComponentProps> = ({ showUploadOption }) => 
                       }}
                       id={`media-${index}`}
                       onRemove={handleRemoveMedia}
+                      style={defaultStyleValues?.previewImageStyle}
+                      closeIcon={images?.closeIcon}
                     />
                   ) : (
                     <FilePreview
@@ -278,6 +193,8 @@ const ChatInput : React.FC<ChatInputComponentProps> = ({ showUploadOption }) => 
                       }}
                       id={`media-${index}`}
                       onRemove={handleRemoveMedia}
+                      style={defaultStyleValues?.previewFileStyle}
+                      closeIcon={images?.closeIcon}
                     />
                   )}
                 </View>
@@ -286,235 +203,46 @@ const ChatInput : React.FC<ChatInputComponentProps> = ({ showUploadOption }) => 
           </View>
         )}
 
-        <View style={styles.inputRow}>
+        <View style={[defaultStyles.inputRow, defaultStyleValues?.containerStyle]}>
           {showUploadOption && (
             <TouchableOpacity
               onPress={handleUploadPress}
-              style={styles.uploadButton}>
+              style={[defaultStyles.uploadButton, defaultStyleValues?.uploadButtonStyle]}>
               <Image
-                source={require('./images/attach_file.png')}
-                style={{width: 24, height: 24, tintColor: 'black'}}
+                source={images.attachIcon}
+                style={[
+                  defaultStyleValues?.uploadIconStyle, defaultStyles.uploadIconStyle
+                ]}
               />
             </TouchableOpacity>
           )}
 
           <TextInput
-            style={styles.input}
+            style={[defaultStyles.input, defaultStyleValues?.inputStyle]}
             value={message}
             onChangeText={setMessage}
-            placeholder="Type a message"
+            placeholder={placeHolderText}
             multiline={true}
           />
-          <Button title="Send" onPress={sendMessage} color={'black'} />
+          <Button
+            title={sendText}
+            onPress={sendMessage}
+            color={defaultStyleValues?.buttonStyle?.backgroundColor || 'black'}
+          />
         </View>
       </View>
 
-      <Modal visible={uploadModalVisible} transparent animationType="slide">
-        <TouchableWithoutFeedback onPress={() => setUploadModalVisible(false)}>
-          <View style={styles.modalOverlay}>
-            <TouchableWithoutFeedback onPress={e => e.stopPropagation()}>
-              <View style={styles.modalContent}>
-                <TouchableOpacity onPress={() => handleOptionSelect('gallery')}>
-                  <Text style={styles.modalOption}>Gallery</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleOptionSelect('document')}>
-                  <Text style={styles.modalOption}>Document</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setUploadModalVisible(false)}>
-                  <Text style={[styles.modalOption, styles.cancelOption]}>
-                    Cancel
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+      <UploadModal
+        visible={uploadModalVisible}
+        onClose={() => setUploadModalVisible(false)}
+        onOptionSelect={handleOptionSelect}
+        modalStyle={defaultStyleValues?.modalStyle}
+        modalOptionStyle={defaultStyleValues?.modalOptionStyle}
+        cancelOptionStyle={defaultStyleValues?.cancelOptionStyle}
+      />
     </View>
   );
 
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-  },
-
-  closeIconStyle: {
-    width: 12,
-    height: 12,
-    tintColor: 'black',
-  },
-
-  inputRowWrapper: {
-    marginBottom: 20,
-  },
-
-  inputRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '#ccc',
-  },
-
-  input: {
-    flex: 1,
-    height: 50,
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginHorizontal: 5,
-    overflow: 'scroll',
-    paddingTop: 15,
-  },
-
-  uploadButton: {
-    padding: 5,
-  },
-
-  message: {
-    padding: 10,
-    backgroundColor: '#f0f0f0',
-    marginBottom: 5,
-    borderRadius: 5,
-  },
-
-  previewImage: {
-    width: 45,
-    height: 45,
-    position: 'relative',
-    marginRight: 8,
-  },
-
-  imagePreviewContainer : {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 6,
-    overflow: 'hidden',
-  },
-
-  imageStyle : {
-    width: '100%',
-    height: '100%',
-    borderRadius: 6,
-  },
-
-  previewCloseContainer: {
-    position: 'absolute',
-    top: -6,
-    right: -6,
-    backgroundColor: 'white',
-    borderRadius: 9999,
-    padding: 4,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-  },
-
-  fileTextStyle: {
-    fontSize: 12,
-    color: '#1f2937',
-    maxWidth: 80,
-  },
-
-  previewContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-    backgroundColor: '#e0e0e0',
-    padding: 5,
-    borderRadius: 5,
-    overflow: 'scroll',
-  },
-
-  filePreviewContainer: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#f3f4f6',
-    borderRadius: 6,
-    paddingHorizontal: 6,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-
-  filePreview :{
-   width: 100,
-   height: 50,
-   position: 'relative',
-   marginRight: 8,
-  },
-
-  previewThumbnail: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
-    borderRadius: 5,
-  },
-
-  removePreview: {
-    fontSize: 18,
-    marginLeft: 10,
-    color: 'red',
-  },
-
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-  },
-
-  modalOption: {
-    padding: 10,
-    fontSize: 16,
-  },
-
-  cancelOption: {
-    color: 'red',
-  },
-
-  previewItem: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-    padding: 5,
-    borderRadius: 5,
-    marginRight: 10,
-    position: 'relative',
-  },
-
-  modalContainer: {
-    flex: 1,
-    backgroundColor: '#000',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  closeArea: {
-    position: 'absolute',
-    top: 40,
-    right: 20,
-    zIndex: 1,
-  },
-
-  fullImage: {
-    width: '100%',
-    height: '100%',
-  },
-});
 
 export default ChatInput;

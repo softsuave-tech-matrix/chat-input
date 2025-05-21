@@ -1,7 +1,8 @@
 {
-  "name": "QuickChat",
-  "version": "0.0.1",
-  "private": true,
+  "name": "react-native-chat-input",
+  "version": "0.0.2",
+  "main": "index.ts",
+  "private": false,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -19,8 +20,6 @@
     "react-native-document-picker": "^9.3.1",
     "react-native-gesture-handler": "^2.25.0",
     "react-native-image-picker": "^8.2.0",
-    "react-native-reanimated": "^3.17.5",
-    "react-native-safe-area-context": "^5.4.0",
     "react-native-screens": "^4.10.0",
     "tailwindcss": "^3.4.17"
   },

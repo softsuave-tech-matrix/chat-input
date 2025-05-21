@@ -1,7 +1,7 @@
 import React from 'react';
 import {DimensionValue, StatusBar, useColorScheme, View} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import ChatInput from './src/ChatInput';
+import { ChatInput } from 'react-native-chat-input';
 
 
 function App(): React.JSX.Element {
@@ -16,6 +16,12 @@ function App(): React.JSX.Element {
   };
 
   const safePadding = '5%';
+  const sendText = 'Send';
+  const placeHolderText = 'Type your message';
+  const handleSend = (messages: any[]) => {
+    console.log('Messages sent:', messages);
+    // Handle the sent messages here
+  };
 
   return (
     <View style={backgroundStyle}>
@@ -23,13 +29,13 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-          }}>
-          <ChatInput showUploadOption={true} />
-        </View>
+      <View
+        style={{
+          backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          paddingHorizontal: safePadding,
+        }}>
+        <ChatInput showUploadOption={true} onSend={handleSend} sendText={sendText} placeHolderText={placeHolderText} />
+      </View>
     </View>
   );
 }
