@@ -125,14 +125,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
         type: [DocumentPicker.types.allFiles],
       });
 
-      const mediaUri = decodeURIComponent(res[0].uri);
+      const mediaUri = res[0]?.uri ? decodeURIComponent(res[0].uri) : '';
 
       setSelectedMediaData(prev => [
         ...prev,
         {
           uri: mediaUri,
-          name: res[0].name,
-          type: res[0].type,
+          name: res[0]?.name,
+          type: res[0]?.type,
         },
       ]);
     } catch (err) {

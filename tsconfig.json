@@ -1,9 +1,17 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
-    "jsx": "react",
-    "baseUrl": "./",
-    "resolveJsonModule": true,
+   "outDir": "dist",
+    "module": "NodeNext",
+    "target": "ES2017",
+    "jsx": "react-native",
+    "allowJs": true,
+    "declaration": true,
+    "sourceMap": true,
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "esModuleInterop": true
   },
-  "include": ["nativewind.d.ts", "src", "App.tsx"]
+  "include": ["nativewind.d.ts", "src", "App.tsx", "index.ts"]
 }
+

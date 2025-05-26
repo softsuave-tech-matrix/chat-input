@@ -1,4 +1,4 @@
-package com.quickchat
+package com.chat-input
 
 import android.app.Application
 import com.facebook.react.PackageList

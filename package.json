@@ -1,7 +1,7 @@
 {
   "name": "react-native-chat-input",
   "version": "0.0.2",
-  "main": "index.ts",
+ "main": "index.ts",
   "private": false,
   "scripts": {
     "android": "react-native run-android",
@@ -17,6 +17,7 @@
     "nativewind": "^4.1.23",
     "react": "19.0.0",
     "react-native": "0.79.2",
+    "react-native-chat-input": "^0.0.1",
     "react-native-document-picker": "^9.3.1",
     "react-native-gesture-handler": "^2.25.0",
     "react-native-image-picker": "^8.2.0",
@@ -27,7 +28,7 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
-    "@react-native-community/cli": "18.0.0",
+    "@react-native-community/cli": "^18.0.0",
     "@react-native-community/cli-platform-android": "18.0.0",
     "@react-native-community/cli-platform-ios": "18.0.0",
     "@react-native/babel-preset": "0.79.2",

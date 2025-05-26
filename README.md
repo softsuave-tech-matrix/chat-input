@@ -27,7 +27,7 @@ import ChatInput from 'react-native-chat-input';
 ```
 
 ```jsx
- <ChatInput showUploadOption={true} onSend={handleSend} sendText={sendText} placeHolderText={placeHolderText} />
+ <ChatInput showUploadOption={true} onSend={handleSend} sendText={sendText} placeHolderText={placeHolderText} images={images} defaultStyleValues={/>
 ```
 
 ## Props
@@ -37,8 +37,8 @@ All the `ChatInput` props can be passed.
 | **Prop**                         | **Type**                         | **Description**                                                                                            
 | -------------------------------- | -------------------------------- |  --------------------------------
 | `showUploadOption`               | `boolean`                        | Determines whether the upload option is shown. Set to `true` to enable uploads|              
-| `defaultStyleValues`             | `ChatInputImages`                | Custom styles for different parts of the component
-| `images`                         | `DefaultStyleTypes`              | Allows customization of icons (attach, close).
+| `defaultStyleValues`             | `DefaultStyleTypes`              | Custom styles for different parts of the component
+| `images`                         | `ChatInputImages`              | Allows customization of icons (attach, close).
 | `sendText`                       | `string`                         | Text to display on the send button 
 | `placeHolderText`                | `string`                         | Placeholder text shown in the input field.
 | `onSend`                         | `(messages: Message[]) => void`  | Callback fired when messages are sent.
